@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Splitstream</title>
+
+    <style>
+    
+    * {    margin: 0;    padding: 0; box-sizing: border-box; }
+body { 
+  font: 26px Helvetica, Arial; 
+  background: #f1f1f1; 
+  color: #424242;
+  padding: 25px 0px 25px; 
+  position: fixed;
+  bottom: 37px;
+  width: 64.5%;
+  padding-left: 25%;
+
+}
+form { 
+   background: #f1f1f1; 
+   padding: 5px; 
+   position: fixed; 
+   bottom: 0; 
+   width: 50%; 
+}
+form input {
+   font: 26px Helvetica, Arial; 
+   border: 1px solid #424242; 
+   padding: 11px; 
+   width: 80%; 
+   margin-right: .5%; 
+   color: #424242;
+   background: #fafafa;
+   outline: 0;
+}
+form button { 
+   font: 26px Helvetica, Arial; 
+   width: 9%; 
+   background: #424242;
+   color: #f1f1f1; 
+   border: none; 
+   padding: 11px; 
+   outline: 0;
+}
+li {
+    margin-bottom: 15px;
+
+}
+#messages{
+
+  list-style-type: none;
+  padding-left: 2.5%;
+}
+.mine{
+  list-style-type: none;
+  padding-left: 2.5%;
+}
+.theirs{
+  list-style-type: none;
+  text-align: right;
+  padding-right: 2.5%;
+}
+
+
+    </style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" autofocus="autofocus" />
+      <button>-></button>
+    </form>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io();
+      $('form').submit(function(){
+        socket.emit('chat message', $('#m').val());
+        $('#m').val('');
+        return false;
+      });
+
+      socket.on('chat message', function(msg){
+        $('#messages').append($('<li>').text(msg));
+      });
+      socket.on('my message', function(msg) {
+        $('#messages').append($('<li class="mine">').text(msg));
+      });
+      socket.on('their message', function(msg) {
+        $('#messages').append($('<li class="theirs">').text(msg));
+      });
+      
+    </script>
+  </body>
+</html>
